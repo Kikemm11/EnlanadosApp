@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="static/assets/img/enlanados_logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="static/stylesheet/main.css">
+
+  <title>EnlanadosApp</title>
+</head>
+<body>
+    <div class="header-container">
+            <div class="header">
+                <h1>EnlanadosApp</h1>
+                <img src="static/assets/img/enlanados_logo.png" alt="Logo" class="logo">
+            </div>
+    </div>
+    <div class="main-container">
+        <div class="buttons">
+            <button class="btn product-btn" onclick="window.location.href='/product'">Productos</button>
+            <button class="btn order-btn" onclick="window.location.href='/'">Pedidos</button>
+            <button class="btn whool_stock-btn" onclick="window.location.href='/'">Inventario</button>
+            <button class="btn statistics-btn" onclick="window.location.href='/'">Estadísticas</button>
+        </div>
+        <div class="content-wrapper">
+            <div class="calendar">
+                <div class="calendar-header" id="calendar-header"></div>
+                <div class="calendar-body" id="calendar-body">
+                  <!-- Days of the week -->
+                    <div class="day-name">Dom</div>
+                    <div class="day-name">Lun</div>
+                    <div class="day-name">Mar</div>
+                    <div class="day-name">Mier</div>
+                    <div class="day-name">Jue</div>
+                    <div class="day-name">Vie</div>
+                    <div class="day-name">Sab</div>
+                </div>
+            </div>
+            <div class="square">
+                <h3>Próximos pedidos</h3>
+                <ul>
+                    {% for order in current_month_orders %}
+                        <li>{{ order.client }}: {{order.product_type.name}}, {{order.estimated_date}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="static/js/main.js"></script>
+</body>
+</html>

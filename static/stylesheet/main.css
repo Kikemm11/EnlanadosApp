@@ -1,0 +1,174 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 1.5rem;  
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background-color:  #FFF5AC;
+}
+
+.header-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top:30px;
+}
+
+.header {
+    top: 10px;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 90px;  
+    font-weight: 900; 
+    margin: 0;
+    color: #FFBD59;
+}
+
+.logo {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(80vh - 100px);
+    padding: 15px;
+    margin-top:40px;
+}
+
+.btn {
+    display: block;
+    width: 250px;
+    height: 80px;
+    padding: 15px 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: #c1e493;
+}
+
+.btn:hover {
+    transform: scale(1.20);
+    opacity: 0.9;
+    background-color: #99b378;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.calendar {
+    margin-top:180px;
+    margin-left: 230px;
+    width: 600px;
+    height: 350px;
+    background-color: white;
+    border: 1px solid #ddd;
+  }
+
+.calendar-header {
+  text-align: center;
+  font-weight: 900;
+  font-size: 24px;
+  padding: 10px 0;
+  background-color: #ACF0D9;
+  color: black;
+}
+
+.calendar-body {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+}
+
+.calendar-body div {
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #333;
+}
+
+.day-name {
+  font-weight: bold;
+  color: #555;
+}
+
+.empty {
+  background-color: transparent;
+}
+
+.current-day {
+  background-color: #FFBD59;
+  color: white;   
+}
+
+.square {
+    margin-top:90px;
+    margin-left: 50px;
+    width: 370px;
+    height: 500px;
+    background-color: #ACF0D9;
+    border: 2px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+
+.square h3 {
+    text-align: center;
+    font-weight: 900;
+    font-size: 24px;
+}
+
+.square ul {
+    list-style: none;
+    padding: 0;
+}
+
+.square li {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 60px; 
+    }
+
+    .logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .btn {
+        font-size: 1.2rem;
+        width: 160px;
+    }
+}

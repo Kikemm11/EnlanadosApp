@@ -1,0 +1,153 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 1.5rem;  
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background-color:  #FFF5AC;
+}
+
+.header-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    margin-top:30px;
+}
+
+h1 {
+    font-size: 80px;  
+    font-weight: 900; 
+    margin: 0;
+    color: #FFBD59;
+}
+
+.back-icon {
+    margin-right: 25px;
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+}
+
+.create {
+    margin-top: 20px;
+    margin-left: 50%;
+}
+
+.btn {
+    display: block;
+    width: 250px;
+    height: 50px;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: #c1e493;
+}
+
+.btn:hover {
+    background-color: #99b378;
+}
+
+.modal-content {
+    border-radius: 50px;
+}
+
+.modal-header {
+    background-color: #FFF5AC;
+}
+
+.modal-footer {
+    border: none;
+}
+
+.modal-btn-ok {
+    background-color: #FFBD59;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+}
+
+.modal-btn-ok:hover {
+    background-color: #df9f3e;
+}
+
+.modal-btn-cancel {
+    background-color: #da4949;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    
+}
+
+.modal-btn-cancel:hover {
+    background-color: #bd3838;
+}
+
+
+.main-container {
+    display: flex;
+    justify-content: flex-start;
+    position: relative; 
+    height: 100vh; 
+}
+
+.product-list {
+    margin-top: 40px;
+    width: 20%; 
+    margin-left: 0; 
+}
+
+ul {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.product {
+    display: flex;
+    justify-content: flex-start;
+}
+
+li {
+    background-color: #FFBD59;
+    width: 350px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.update-icon, .delete-icon {
+    display: none;
+    margin-top: 25px;
+    margin-left: 10px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.back-logo {
+    margin-top: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); 
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    width: 700px;
+    height: 700px;
+    object-fit: contain;
+}

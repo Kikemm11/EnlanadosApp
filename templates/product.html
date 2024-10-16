@@ -1,0 +1,110 @@
+{% if message %}
+<script>
+  window.onload = function() {
+    alert("{{ message }}");
+  };
+</script>
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="static/assets/img/enlanados_logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/stylesheet/product.css">
+  
+
+  <title>EnlanadosApp</title>
+</head>
+<body>
+    <div class="header-container">
+        <a href="{{ url_for('main') }}">  
+            <img src="static/assets/img/back.png" alt="Back" class="back-icon">
+        </a>
+        <h1>Productos</h1>
+        <div class="create">
+            <button class= "btn" id="addProductBtn">Nuevo Producto</button>
+        </div>
+    </div>
+
+    <!-- Popup modal to create products-->
+
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Nuevo Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/product-add" id="addProductForm">
+                        <div class="form-group">
+                            <label for="productName">Nombre</label>
+                            <input type="text" class="form-control" id="productName" name="productName">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-btn-cancel" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="modal-btn-ok" id="addBtn">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Popup modal to update products-->
+
+    <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateProductModalLabel">Editar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/product-update" id="updateProductForm">
+                        <input type="hidden" id="updateProductId" name="productId">
+                        <div class="form-group">
+                            <label for="updateProductName">Nombre</label>
+                            <input type="text" class="form-control" id="updateProductName" name="productName">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-btn-cancel" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="modal-btn-ok" id="updateBtn">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class= "product-list">
+            <ul>
+                {% for product in products %}
+                    <div class="product">
+                        <li onclick="toggleIcons(this)">{{product.name}}</li>
+                        <img src="static/assets/img/update.png" alt="Update" class="update-icon" data-id="{{ product.id }}" data-name="{{ product.name }}">
+                        <img src="static/assets/img/delete.png" alt="Delete" class="delete-icon" data-id="{{ product.id }}">
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="back-logo">
+            <img src="static/assets/img/enlanados_logo.png" alt="Logo" class="logo">
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="static/js/product.js"></script>
+</body>
+</html>
