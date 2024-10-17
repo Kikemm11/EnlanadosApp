@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, joinedload
 from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
 import os
@@ -29,6 +29,12 @@ class ProductTypeController:
         result = session.query(ProductType).filter(ProductType.name == name).first()
         session.close()
         return result    
+    
+    def read_filtered_product_type(self, product_id):
+        session = self.SessionLocal()
+        result = session.query(ProductType).filter(ProductType.product_id == product_id).options(joinedload(ProductType.product)).all()
+        session.close()
+        return result 
     
     
     # Write Method
@@ -61,8 +67,8 @@ class ProductTypeController:
             product_type = session.query(ProductType).filter(ProductType.id == product_type_id).first()
             if product_type:
                 product_type.name = data.get('name')
-                product_type.name = data.get('product')
-                product_type.name = data.get('price')
+                product_type.product_id = data.get('product_id')
+                product_type.price = data.get('price')
                 session.commit()
                 return {'success': True, 'message': 'Tipo de producto actualizado correctamente.'}
             else:

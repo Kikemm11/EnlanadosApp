@@ -12,6 +12,7 @@ body {
     justify-content: flex-start;
     flex-direction: row;
     margin-top:30px;
+    height:150px;
 }
 
 h1 {
@@ -31,6 +32,9 @@ h1 {
 .create {
     margin-top: 20px;
     margin-left: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .btn {
@@ -126,15 +130,28 @@ li {
     text-align: center;
     border-radius: 30px;
     cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.update-icon, .delete-icon {
+li:hover {
+    background-color: #df9f3e; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.update-icon, .delete-icon, .options-icon {
     display: none;
     margin-top: 25px;
     margin-left: 10px;
     width: 25px;
     height: 25px;
     cursor: pointer;
+}
+
+.update-icon-table, .delete-icon-table {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .back-logo {
@@ -150,4 +167,16 @@ li {
     width: 700px;
     height: 700px;
     object-fit: contain;
+}
+
+.overlay-table {
+    position: absolute; /* Position it absolutely */
+    top: 25%; /* Adjust based on your layout */
+    left: 50%; /* Center the table horizontally */
+    transform: translate(-50%, -50%); /* Center the table */
+    background-color: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+    z-index: 10; /* Ensure it's on top of other elements */
+    padding: 20px; /* Add some padding */
+    border-radius: 8px; /* Round the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility */
 }

@@ -10,7 +10,7 @@ load_dotenv()
 database = os.getenv("DATABASE")
 
 
-class ProdutController:
+class ProductController:
     def __init__(self, db_url):
         self.engine = create_engine(database)
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)

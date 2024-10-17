@@ -12,7 +12,7 @@ class Product(Base):
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
     
     # One Product can have many ProductTypes
-    product_types = relationship("ProductType", backref="product", cascade="all, delete", passive_deletes=True, lazy=True)
+    product_types = relationship("ProductType", backref="product", cascade="all, delete", passive_deletes=True)
     
     # One Product belongs to many Orders
     orders = relationship("Order", backref="product", cascade="all, delete", passive_deletes=True)
