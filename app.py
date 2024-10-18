@@ -14,17 +14,15 @@ from controllers.WhoolStockController import WhoolStockController
 load_dotenv()
 database = os.getenv("DATABASE")
 
-
-
 app = Flask(__name__)
 
 #Static folder route
-
 app.static_folder = 'static'  
 
 #Web app secret key (Need to change)
-
 app.secret_key = '123456789' 
+
+
 
 # Login route
 
@@ -34,6 +32,10 @@ def main():
     connection = OrderController(database)
     current_month_orders = connection.read_current_month_order()
     return render_template('main.html', orders=current_month_orders)
+
+
+# Product routes
+
 
 @app.route('/product', methods=['GET'])
 def product():
@@ -77,6 +79,9 @@ def delete_product(product_id):
     connection.delete_product(product_id)
     
     return redirect(url_for('product'))
+
+
+# Product Type routes 
 
 
 @app.route('/product-type/<int:product_id>', methods=['GET', 'POST'])
@@ -129,6 +134,9 @@ def update_product_type():
     return redirect(url_for('product'))
 
 
+# Whool Stock routes
+
+
 @app.route('/whool-stock', methods=['GET'])
 def whool_stock():
     
@@ -177,5 +185,4 @@ def delete_whool_stock_id(whool_stock_id):
 
     
 if __name__ == "__main__": 
-    
     app.run(host="127.0.0.1", port=5000, debug=True)   

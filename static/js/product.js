@@ -1,16 +1,17 @@
 // Handle the visibility of the delete and update icons
 
 function toggleIcons(item) {
-    // Get the icons inside the same parent container as the clicked <li>
+    
     const icons = item.parentElement.querySelectorAll('.update-icon, .delete-icon, .options-icon');
     icons.forEach(icon => {
         if (icon.style.display === "none" || icon.style.display === "") {
-            icon.style.display = "inline-block"; // Show the icons
+            icon.style.display = "inline-block"; 
         } else {
-            icon.style.display = "none"; // Hide the icons
+            icon.style.display = "none"; 
         }
     });
 }
+
 
 // Handle the added new product within the popup modal
 
@@ -24,6 +25,7 @@ $(document).ready(function() {
         $('#addProductForm').submit();
     });
 });
+
 
 // Handle the added new product type within the popup modal
 
@@ -40,12 +42,13 @@ $(document).ready(function() {
     });
 });
 
+
 // Handle the updated product within the popup modal
 
 $(document).ready(function() {
-    // Event listener for update-icon clicks
+    
     $('.update-icon').on('click', function() {
-        // Get the product ID and name from the data attributes
+        
         const productId = $(this).data('id');
         const productName = $(this).data('name');
         
@@ -53,10 +56,10 @@ $(document).ready(function() {
         $('#updateProductId').val(productId);
         $('#updateProductName').val(productName);
 
-        // Show the update modal
         $('#updateProductModal').modal('show');
     });
 });
+
 
 // Handle the delete button interaction on product
 
@@ -71,18 +74,20 @@ $(document).ready(function() {
 });
 
 
+// Handle the options icon to show the product types table related to the parent product
+
 $(document).ready(function() {
     $('.options-icon').on('click', function() {
-        // Get the product ID from the data attribute
+        
         const productId = $(this).data('id');
 
-        // Make an AJAX request to fetch product details
+        // Make an AJAX request to fetch parent's product types
         $.ajax({
-            url: `/product-type/${productId}`, // Adjust the URL as needed
+            url: `/product-type/${productId}`, 
             method: 'GET',
             success: function(data) {
                 
-                $('#optionsTable tbody').empty(); // Clear existing rows
+                $('#optionsTable tbody').empty(); 
 
                 data.forEach(function(product) {
                     
@@ -97,7 +102,6 @@ $(document).ready(function() {
                     $('#optionsTable tbody').append(row);
                 });
 
-                // Show the options table
                 $('#optionsTable').toggle();
             },
             error: function() {
@@ -107,7 +111,7 @@ $(document).ready(function() {
 
     });
 
-    // Optional: Close the table when clicking outside of it
+    // Close the table when clicking outside of it
     $(document).on('click', function(event) {
         if (!$(event.target).closest('.options-icon').length && !$(event.target).closest('#optionsTable').length) {
             $('#optionsTable').hide();
@@ -123,6 +127,7 @@ $(document).ready(function() {
         window.location.href = `/product-type-delete/${productTypeId}`;   
     });
 
+    // Handle the update button interaction on product type
 
     $('#optionsTable').on('click', '.update-icon-table', function() {    
         
@@ -139,7 +144,6 @@ $(document).ready(function() {
         $('#updateProductTypeParent').val(productTypeParent);
         $('#updateProductTypePrice').val(productTypePrice);
 
-        // Show the update modal
         $('#updateProductTypeModal').modal('show');
     });
 

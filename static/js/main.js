@@ -11,8 +11,8 @@ function buildCalendar() {
     ];
   
     // Get the first day of the current month and the total days in the month
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 is Sunday, 6 is Saturday
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Total days in the month
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();             // 0 is Sunday, 6 is Saturday
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); 
   
     // Set the header with the current month and year
     document.getElementById('calendar-header').textContent = `${monthNames[currentMonth]} ${currentYear}`;
@@ -40,8 +40,6 @@ function buildCalendar() {
     }
   }
   
-  // Build the calendar when the page loads
   window.onload = function () {
     buildCalendar();
-  };
-  
+  }; 

@@ -12,10 +12,11 @@ $(document).ready(function() {
     });
 });
 
+
 // Handle the updated stock within the popup modal
 
 $(document).ready(function() {
-    // Event listener for update-icon clicks
+
     $('.update-icon').on('click', function() {
         
         const whoolId = $(this).data('id');
@@ -27,7 +28,6 @@ $(document).ready(function() {
         $('#updateWhoolColor').val(whoolColor);
         $('#updateWhoolQuantity').val(whoolQuantity);
 
-        // Show the update modal
         $('#updateStockModal').modal('show');
     });
 });
@@ -37,9 +37,8 @@ $(document).ready(function() {
 $(document).ready(function() {
     
     $('.delete-icon').on('click', function() {
-        // Get the stock ID from the data-id attribute
-        const stockId = $(this).data('id');
 
+        const stockId = $(this).data('id');
         window.location.href = `/whool-stock-delete/${stockId}`;
     });
 });
