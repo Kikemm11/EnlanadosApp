@@ -9,6 +9,7 @@ import os
 from controllers.OrderController import OrderController
 from controllers.ProductController import ProductController
 from controllers.ProductTypeController import ProductTypeController
+from controllers.WhoolStockController import WhoolStockController
 
 load_dotenv()
 database = os.getenv("DATABASE")
@@ -126,6 +127,52 @@ def update_product_type():
     connection.update_product_type(product_type_id, data)
     
     return redirect(url_for('product'))
+
+
+@app.route('/whool-stock', methods=['GET'])
+def whool_stock():
+    
+    connection = WhoolStockController(database)
+    whools = connection.read_all_whool_stock()
+    return render_template('whool_stock.html', whools=whools)
+
+@app.route('/whool-stock-add', methods=['GET', 'POST'])
+def add_whool_stock():
+
+    if 'whoolColor' in request.form and 'whoolQuantity' in request.form:
+        color = request.form['whoolColor']
+        quantity = int(request.form['whoolQuantity'])
+        last_update = datetime.now()
+        
+        data = {"color": color, "quantity": quantity, "last_update":last_update}
+
+        connection = WhoolStockController(database)
+        connection.write_whool_stock(data)
+        
+        return redirect(url_for('whool_stock'))
+
+@app.route('/whool-stock-update', methods=['GET', 'POST'])
+def update_whool_stock():
+    
+    connection = WhoolStockController(database)
+    
+    whool_stock_id = int(request.form['stockId'])
+    color = request.form['updateWhoolColor']
+    quantity = request.form['updateWhoolQuantity']
+    
+    data = {'color': color, 'quantity':quantity }
+    
+    connection.update_whool_stock(whool_stock_id, data)
+    
+    return redirect(url_for('whool_stock'))
+
+@app.route('/whool-stock-delete/<int:whool_stock_id>', methods=['GET', 'POST'])
+def delete_whool_stock_id(whool_stock_id):
+    
+    connection = WhoolStockController(database)
+    connection.delete_whool_stock(whool_stock_id)
+    
+    return redirect(url_for('whool_stock'))
     
 
     
