@@ -10,6 +10,7 @@ from controllers.OrderController import OrderController
 from controllers.ProductController import ProductController
 from controllers.ProductTypeController import ProductTypeController
 from controllers.WhoolStockController import WhoolStockController
+from controllers.StatusController import StatusController
 
 load_dotenv()
 database = os.getenv("DATABASE")
@@ -181,6 +182,21 @@ def delete_whool_stock_id(whool_stock_id):
     connection.delete_whool_stock(whool_stock_id)
     
     return redirect(url_for('whool_stock'))
+
+
+
+# Order routes
+
+
+@app.route('/order', methods=['GET'])
+def order():
+    
+    order_connection = OrderController(database)
+    status_connection = StatusController(database)
+    
+    orders = order_connection.read_current_month_order() 
+    statuses = status_connection.read_all_status()
+    return render_template('order.html', orders=orders, statuses=statuses)
     
 
     

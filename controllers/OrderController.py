@@ -34,9 +34,11 @@ class OrderController:
             current_year = today.year
     
             result = session.query(Order).filter(
-                                extract('month', Order.estimated_date) == current_month,
-                                extract('year', Order.estimated_date) == current_year
-                                ).all()
+                        extract('month', Order.estimated_date) == current_month,
+                        extract('year', Order.estimated_date) == current_year,
+                        #Order.status == 1
+                    ).all()
+            
             return result
         
         finally:
