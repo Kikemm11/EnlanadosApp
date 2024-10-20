@@ -25,6 +25,13 @@ class OrderController:
         session.close()
         return result
     
+    def read_one_order(self, order_id):
+    
+        session = self.SessionLocal()
+        result = session.query(Order).filter(Order.id == order_id).first()
+        session.close()
+        return result
+        
     def read_current_month_order(self):
         session = self.SessionLocal()
         
@@ -104,15 +111,16 @@ class OrderController:
         try:
             session = self.SessionLocal()
             order = session.query(Order).filter(Order.id == order_id).first()
-            if order:
+            if order and order.status_id == 1:
                 order.client = data.get('client')
-                order.city = data.get('city')
-                order.product = data.get('product')
-                order.product_type = data.get('product_type')
+                order.city_id = data.get('city_id')
+                order.product_id = data.get('product_id')
+                order.product_type_id = data.get('product_type_id')
                 order.description = data.get('description')
+                order.price = data.get('price')
                 order.added_price = data.get('added_price')
                 order.credit = data.get('credit')
-                order.payment_method = data.get('payment_method')
+                order.payment_method_id = data.get('payment_method_id')
                 order.estimated_date = data.get('estimated_date')
                 session.commit()
                 return {'success': True, 'message': 'Pedido actualizado correctamente.'}

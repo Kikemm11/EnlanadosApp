@@ -270,17 +270,69 @@ def deliver_order(order_id):
     return jsonify({'message': 'Product delivered successfully!'}), 200
 
 @app.route('/order-cancel/<int:order_id>', methods=['GET', 'POST'])
-def deliver_cancel(order_id):
+def cancel_order(order_id):
     
     order_connection = OrderController(database)
     order_connection.cancel_order(order_id) 
     
     return jsonify({'message': 'Product delivered successfully!'}), 200
-    
 
+@app.route('/order-detail/<int:order_id>', methods=['GET', 'POST'])
+def detail_order(order_id):
+    
+    
+    if request.method == 'GET':
         
+        city_connection = CityController(database)
+        product_connection = ProductController(database)
+        product_type_connection = ProductTypeController(database)
+        payment_method_connection = PaymentMethodController(database)
+        status_connection = StatusController(database)
+        order_connection = OrderController(database)
+        
+        cities = city_connection.read_all_city()
+        products = product_connection.read_all_product()
+        product_types = product_type_connection.read_all_product_type()
+        payment_methods = payment_method_connection.read_all_payment_method()
+        statuses = status_connection.read_all_status()
+        order = order_connection.read_one_order(order_id)
+        
+        return render_template('order_detail.html', cities=cities, products=products, product_types=product_types, payment_methods=payment_methods, statuses=statuses, order=order)
+    
+    else:
+        
+        order_connection = OrderController(database)
+        
+        client = request.form['orderClient']
+        city = request.form['orderCity']
+        description = request.form['orderDescription']
+        
+        product = request.form['orderProduct']
+        product_type = request.form['orderProductType']
+        price = request.form['orderPrice']
+        added_price = request.form['orderAddedPrice']
+        credit = request.form['orderCredit']
+        payment_method = request.form['orderPaymentMethod']
+        
+        estimated_date = request.form['orderEstimatedDate']
+        
+        data = {'client': client,
+                'city_id': int(city),
+                'description': description,
+                'product_id': int(product),
+                'product_type_id': int(product_type),
+                'price': float(price),
+                'added_price': float(added_price) if added_price != '' else 0.0,
+                'credit': float(credit) if credit != '' else 0.0,
+                'payment_method_id': int(payment_method),
+                'estimated_date': estimated_date
+                }
+
+        order_connection.update_order(order_id, data)
+        
+        return redirect(url_for('order'))
     
 
-    
+
 if __name__ == "__main__": 
     app.run(host="127.0.0.1", port=5000, debug=True)   

@@ -64,3 +64,16 @@ $(document).ready(function() {
         });
     });
 });
+
+
+// Manage the logic when eye icon is clicked
+
+$(document).ready(function() {
+
+    let orderId = null;
+    
+    $('.eye-icon').on('click', function() {
+        orderId = $(this).data('id'); 
+        window.location.href = `/order-detail/${orderId}`;
+    });
+});

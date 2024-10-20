@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../static/assets/img/enlanados_logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../static/stylesheet/order_detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        
+        document.getElementById('orderClient').value = "{{order.client}}"; 
+        document.getElementById('orderCity').value = {{order.city_id}}; 
+        document.getElementById('orderDescription').value = "{{order.description}}"; 
+        document.getElementById('orderProduct').value = {{order.product_id}}; 
+        document.getElementById('orderProductType').value = {{order.product_type_id}}; 
+        document.getElementById('orderPrice').value = "{{order.price}}"; 
+        document.getElementById('orderAddedPrice').value = "{{order.added_price}}";
+        document.getElementById('orderCredit').value = "{{order.credit}}";
+        document.getElementById('orderPaymentMethod').value = {{order.payment_method_id}}; 
+        document.getElementById('orderEstimatedDate').value = "{{order.estimated_date}}";
+        document.getElementById('orderStatus').value = {{order.status_id}};  
+    });
+  </script>
+
+  
+  <title>EnlanadosApp</title>
+</head>
+<body>
+    <div class="header-container">
+        <a href="{{ url_for('order') }}">  
+            <img src="../static/assets/img/back.png" alt="Back" class="back-icon">
+        </a>
+        <h1>Pedido {{order.id}}</h1>
+    </div>
+
+    <hr>
+
+    <form method="POST" action="/order-detail/{{order.id}}" id="updateOrderForm">
+        <div class="main-info">
+            <div class="client-info">
+                <div class="client">
+                    <label for="orderClient">Cliente</label>
+                    <input type="text" class="form-control" id="orderClient" name="orderClient" required=true readonly>
+                </div>
+                <div class="city">
+                    <label for="orderCity">Destino</label>
+                    <select class="city-select" id="orderCity" name="orderCity" required=true disabled>
+                        <option value="">Selecciona un destino</option>
+                        {% for city in cities %}
+                            <option value="{{ city.id }}">{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="order-description">
+                <label for="orderDescription">Descripción</label>
+                <input type="text" class="form-control" id="orderDescription" name="orderDescription" readonly>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="order-container">
+            <div class="left-side">
+                <div class="order-info">
+                    <div class="product">
+                        <label for="orderProduct">Producto</label>
+                        <select class="product-select" id="orderProduct" name="orderProduct" required=true disabled>
+                            <option value="">Selecciona un producto</option>
+                            {% for product in products %}
+                                <option value="{{ product.id }}">{{ product.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="product-type">
+                        <label for="orderProductType">Tipo de Producto</label>
+                        <select class="product-type-select" id="orderProductType" name="orderProductType" required=true disabled>
+                            <option value="">Selecciona un tipo de producto</option>
+                            {% for product_type in product_types %}
+                                <option value="{{ product_type.id }}">{{ product_type.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="price-info">
+                    <label for="orderPrice">Precio</label>
+                    <input type="number" class="form-control" id="orderPrice" name="orderPrice" step="0.01" readonly>
+                    <label for="orderAddedPrice">Extra</label>
+                    <input type="number" class="form-control" id="orderAddedPrice" name="orderAddedPrice" step="0.01" readonly>
+                    <label for="orderCredit">Abono</label>
+                    <input type="number" class="form-control" id="orderCredit" name="orderCredit" step="0.01" readonly>
+                </div>
+                <div class="payment-method-info">
+                    <label for="orderPaymentMethod">Método de Pago</label>
+                    <select class="payment-method-select" id="orderPaymentMethod" name="orderPaymentMethod" required=true disabled>
+                        <option value="">Selecciona un método de pago</option>
+                        {% for method in payment_methods %}
+                            <option value="{{ method.id }}">{{ method.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="right-side">
+                <div class="date-info">
+                    <label for="estimated-date">Fecha Estimada</label>
+                    <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true readonly>
+                </div>
+                <div class="status-info">
+                    <label for="orderPaymentMethod">Estatus</label>
+                    <select class="status-select" id="orderStatus" name="orderStatus" required=true disabled>
+                        <option value="">Selecciona un Estatus</option>
+                        {% for status in statuses %}
+                            <option value="{{ status.id }}">{{ status.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>  
+        </div>
+        <div class="form-btns">
+            <button type="button" class="btn-update">Editar</button>
+            <button type="submit" class="btn-ok" id="updateBtn" hidden>Guardar</button>
+        </div>
+    </form>
+    <script>
+        document.querySelector('.btn-update').addEventListener('click', function() {
+          // Show the hidden button
+          document.getElementById('updateBtn').removeAttribute('hidden');
+      
+          // Remove readonly from input fields
+          document.getElementById('orderClient').readOnly = false;
+          document.getElementById('orderCity').disabled = false;
+          document.getElementById('orderDescription').readOnly = false;
+          document.getElementById('orderProduct').disabled = false;
+          document.getElementById('orderProductType').disabled = false;
+          document.getElementById('orderAddedPrice').readOnly = false;
+          document.getElementById('orderCredit').readOnly = false;
+          document.getElementById('orderPaymentMethod').disabled = false;
+          document.getElementById('orderEstimatedDate').readOnly = false;
+        });
+    </script>
+    <script>
+        // Filter the product_type selection based in the input of product field
+
+        $(document).ready(function() {
+            $('#orderProduct').on('change', function() {
+                // Get the selected product ID
+                const productId = $(this).val();
+
+                if (productId && productId != "") {
+
+                    $('#orderProductType').empty().append('<option value="">Selecciona un tipo de producto</option>');
+
+                    {% for product_type in product_types %}
+
+                    if (productId == {{product_type.product_id}}) {
+                            
+                            const option = `<option value="{{ product_type.id }}">{{ product_type.name }}</option>`;
+                            $('#orderProductType').append(option);
+                    }
+                    {% endfor %}
+
+                } else {
+                    $('#orderProductType').empty().append('<option value="">Selecciona un tipo de producto</option>');
+                }
+            });
+        }); 
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#orderProductType').on('change', function() {
+                // Get the selected product type ID
+                const productTypeId = $(this).val();
+                let price;
+
+                {% for product_type in product_types %}
+
+                    if (productTypeId == {{product_type.id}}) {
+                        price = {{product_type.id}};
+                    }
+                {% endfor %}
+        
+                document.getElementById('orderPrice').value = price;   
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.city-select').select2({
+              placeholder: "Selecciona un destino",
+              allowClear: true
+            });
+          });
+        
+        $(document).ready(function() {
+          $('.product-select').select2({
+            placeholder: "Selecciona un producto",
+            allowClear: true
+          });
+        });
+        
+        $(document).ready(function() {
+            $('.product-type-select').select2({
+              placeholder: "Selecciona un tipo de producto",
+              allowClear: true
+            });
+          });
+        
+        $(document).ready(function() {
+          $('.payment-method-select').select2({
+            placeholder: "Selecciona un método de pago",
+            allowClear: true
+          });
+        });
+
+        $(document).ready(function() {
+            $('.status-select').select2({
+              placeholder: "Selecciona un estatus",
+              allowClear: true
+            });
+          });
+
+    </script>
+</body>
+</html>
