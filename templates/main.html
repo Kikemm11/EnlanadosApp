@@ -39,7 +39,7 @@
             <div class="square">
                 <h3>Próximos pedidos</h3>
                 <ul>
-                    {% for order in current_month_orders %}
+                    {% for order in orders %}
                         <li>{{ order.client }}: {{order.product_type.name}}, {{order.estimated_date}}</li>
                     {% endfor %}
                 </ul>

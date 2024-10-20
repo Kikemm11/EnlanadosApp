@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="static/assets/img/enlanados_logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="static/stylesheet/order_add.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  
+  <title>EnlanadosApp</title>
+</head>
+<body>
+    <div class="header-container">
+        <a href="{{ url_for('order') }}">  
+            <img src="static/assets/img/back.png" alt="Back" class="back-icon">
+        </a>
+        <h1>Nuevo Pedido</h1>
+    </div>
+
+    <hr>
+
+    <form method="POST" action="/order-add" id="addOrderForm">
+        <div class="main-info">
+            <div class="client-info">
+                <div class="client">
+                    <label for="orderClient">Cliente</label>
+                    <input type="text" class="form-control" id="orderClient" name="orderClient" required=true>
+                </div>
+                <div class="city">
+                    <label for="orderCity">Destino</label>
+                    <select class="city-select" id="orderCity" name="orderCity" required=true>
+                        <option value="">Selecciona un destino</option>
+                        {% for city in cities %}
+                            <option value="{{ city.id }}">{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="order-description">
+                <label for="orderDescription">Descripción</label>
+                <input type="text" class="form-control" id="orderDescription" name="orderDescription">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="order-container">
+            <div class="left-side">
+                <div class="order-info">
+                    <div class="product">
+                        <label for="orderProduct">Producto</label>
+                        <select class="product-select" id="orderProduct" name="orderProduct" required=true>
+                            <option value="">Selecciona un producto</option>
+                            {% for product in products %}
+                                <option value="{{ product.id }}">{{ product.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="product-type">
+                        <label for="orderProductType">Tipo de Producto</label>
+                        <select class="product-type-select" id="orderProductType" name="orderProductType" required=true>
+                            <option value="">Selecciona un tipo de producto</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="price-info">
+                    <label for="orderPrice">Precio</label>
+                    <input type="number" class="form-control" id="orderPrice" name="orderPrice" step="0.01" readonly>
+                    <label for="orderAddedPrice">Extra</label>
+                    <input type="number" class="form-control" id="orderAddedPrice" name="orderAddedPrice" step="0.01" >
+                    <label for="orderCredit">Abono</label>
+                    <input type="number" class="form-control" id="orderCredit" name="orderCredit" step="0.01">
+                </div>
+                <div class="payment-method-info">
+                    <label for="orderPaymentMethod">Método de Pago</label>
+                    <select class="payment-method-select" id="orderPaymentMethod" name="orderPaymentMethod" required=true>
+                        <option value="">Selecciona un método de pago</option>
+                        {% for method in payment_methods %}
+                            <option value="{{ method.id }}">{{ method.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="right-side">
+                <div class="date-info">
+                    <label for="estimated-date">Fecha Estimada</label>
+                    <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true>
+                </div>
+            </div>  
+        </div>
+        <div class="form-btns">
+            <button type="button" class="btn-cancel" onclick="window.location.href='/order'">Cancelar</button>
+            <button type="submit" class="btn-ok" id="AddBtn">Guardar</button>
+        </div>
+    </form>
+    <script src="static/js/order_add.js"></script>
+    <script>
+        // Filter the product_type selection based in the input of product field
+
+        $(document).ready(function() {
+            $('#orderProduct').on('change', function() {
+                // Get the selected product ID
+                const productId = $(this).val();
+
+                console.log(productId)
+
+                if (productId && productId != "") {
+
+                    $('#orderProductType').empty().append('<option value="">Selecciona un tipo de producto</option>');
+
+                    {% for product_type in product_types %}
+
+                    if (productId == {{product_type.product_id}}) {
+                            
+                            const option = `<option value="{{ product_type.id }}">{{ product_type.name }}</option>`;
+                            $('#orderProductType').append(option);
+                    }
+                    {% endfor %}
+
+                } else {
+                    $('#orderProductType').empty().append('<option value="">Selecciona un tipo de producto</option>');
+                }
+            });
+        }); 
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#orderProductType').on('change', function() {
+                // Get the selected product type ID
+                const productTypeId = $(this).val();
+                let price;
+
+                {% for product_type in product_types %}
+
+                    if (productTypeId == {{product_type.id}}) {
+                        price = {{product_type.id}};
+                    }
+                {% endfor %}
+        
+                document.getElementById('orderPrice').value = price;   
+            });
+        });
+    </script>
+</body>
+</html>

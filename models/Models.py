@@ -82,7 +82,7 @@ class Order(Base):
     credit = Column(Float, default=0.0)
     payment_method_id = Column(Integer, ForeignKey('payment_method.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     estimated_date = Column(Date, nullable=False)
-    status_id = Column(Integer, ForeignKey('status.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+    status_id = Column(Integer, ForeignKey('status.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False, default=1)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
     
     

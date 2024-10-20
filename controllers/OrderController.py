@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, extract
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, joinedload
 from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
 from datetime import datetime
@@ -36,7 +36,37 @@ class OrderController:
             result = session.query(Order).filter(
                         extract('month', Order.estimated_date) == current_month,
                         extract('year', Order.estimated_date) == current_year,
-                        #Order.status == 1
+                    ).options(joinedload(Order.product), 
+                              joinedload(Order.product_type), 
+                              joinedload(Order.payment_method),
+                              joinedload(Order.status),
+                              joinedload(Order.city),
+                              ).all()
+            
+            return result
+        
+        finally:
+            session.close()
+            
+    def read_filter_order(self, start_date, end_date, status):
+        
+        session = self.SessionLocal()
+        
+        start_date = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+        status = [1,2,3] if status == "" else [status]
+        
+        try:
+                    
+            result = session.query(Order).filter(
+                        Order.estimated_date.between(start_date, end_date),
+                        Order.status_id.in_(status)
+                    ).options(
+                        joinedload(Order.product), 
+                        joinedload(Order.product_type), 
+                        joinedload(Order.payment_method),
+                        joinedload(Order.status),
+                        joinedload(Order.city),
                     ).all()
             
             return result
@@ -44,16 +74,8 @@ class OrderController:
         finally:
             session.close()
         
-       
-    # Fix search parameters later   
-       
-    #def read_one_order(self, name):
-    #    session = self.SessionLocal()
-    #    result = session.query(Order).filter(Order.name == name).first()
-    #    session.close()
-    #    return result    
-    
-    
+        
+      
     # Write Method
     
     def write_order(self, data):
@@ -92,6 +114,41 @@ class OrderController:
                 order.credit = data.get('credit')
                 order.payment_method = data.get('payment_method')
                 order.estimated_date = data.get('estimated_date')
+                session.commit()
+                return {'success': True, 'message': 'Pedido actualizado correctamente.'}
+            else:
+                return {'success': False, 'message': 'No se encontró el pedido con el ID proporcionado.'}
+        except Exception as e:
+            session.rollback()
+            return {'success': False, 'message': f'Error al actualizar pedido: {str(e)}'}
+        finally:
+            session.close()
+            
+    
+    def deliver_order(self, order_id):
+        
+        try:
+            session = self.SessionLocal()
+            order = session.query(Order).filter(Order.id == order_id).first()
+            if order:
+                order.status_id = 2
+                session.commit()
+                return {'success': True, 'message': 'Pedido actualizado correctamente.'}
+            else:
+                return {'success': False, 'message': 'No se encontró el pedido con el ID proporcionado.'}
+        except Exception as e:
+            session.rollback()
+            return {'success': False, 'message': f'Error al actualizar pedido: {str(e)}'}
+        finally:
+            session.close()
+            
+    def cancel_order(self, order_id):
+        
+        try:
+            session = self.SessionLocal()
+            order = session.query(Order).filter(Order.id == order_id).first()
+            if order:
+                order.status_id = 3
                 session.commit()
                 return {'success': True, 'message': 'Pedido actualizado correctamente.'}
             else:

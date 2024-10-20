@@ -11,6 +11,8 @@ from controllers.ProductController import ProductController
 from controllers.ProductTypeController import ProductTypeController
 from controllers.WhoolStockController import WhoolStockController
 from controllers.StatusController import StatusController
+from controllers.CityController import CityController
+from controllers.PaymentMethodController import PaymentMethodController 
 
 load_dotenv()
 database = os.getenv("DATABASE")
@@ -188,15 +190,95 @@ def delete_whool_stock_id(whool_stock_id):
 # Order routes
 
 
-@app.route('/order', methods=['GET'])
+@app.route('/order', methods=['GET', 'POST'])
 def order():
+    
     
     order_connection = OrderController(database)
     status_connection = StatusController(database)
     
-    orders = order_connection.read_current_month_order() 
     statuses = status_connection.read_all_status()
+    
+    if request.method == 'GET':
+        orders = order_connection.read_current_month_order() 
+        
+    else:
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        status = request.form['orderStatus']
+        
+        orders = order_connection.read_filter_order(start_date, end_date, status)
+        
     return render_template('order.html', orders=orders, statuses=statuses)
+
+@app.route('/order-add', methods=['GET', 'POST'])
+def add_order():
+
+    if request.method == 'GET':
+        
+        city_connection = CityController(database)
+        product_connection = ProductController(database)
+        product_type_connection = ProductTypeController(database)
+        payment_method_connection = PaymentMethodController(database)
+        
+        cities = city_connection.read_all_city()
+        products = product_connection.read_all_product()
+        product_types = product_type_connection.read_all_product_type()
+        payment_methods = payment_method_connection.read_all_payment_method()
+        
+        return render_template('order_add.html', cities=cities, products=products, product_types=product_types, payment_methods=payment_methods)
+    
+    else:
+        
+        order_connection = OrderController(database)
+        
+        client = request.form['orderClient']
+        city = request.form['orderCity']
+        description = request.form['orderDescription']
+        
+        product = request.form['orderProduct']
+        product_type = request.form['orderProductType']
+        price = request.form['orderPrice']
+        added_price = request.form['orderAddedPrice']
+        credit = request.form['orderCredit']
+        payment_method = request.form['orderPaymentMethod']
+        
+        estimated_date = request.form['orderEstimatedDate']
+        
+        data = {'client': client,
+                'city_id': int(city),
+                'description': description,
+                'product_id': int(product),
+                'product_type_id': int(product_type),
+                'price': float(price),
+                'added_price': float(added_price) if added_price != '' else 0.0,
+                'credit': float(credit) if credit != '' else 0.0,
+                'payment_method_id': int(payment_method),
+                'estimated_date': estimated_date
+                }
+
+        order_connection.write_order(data)
+        
+        return redirect(url_for('order'))
+        
+@app.route('/order-deliver/<int:order_id>', methods=['GET', 'POST'])
+def deliver_order(order_id):
+    
+    order_connection = OrderController(database)
+    order_connection.deliver_order(order_id) 
+    
+    return jsonify({'message': 'Product delivered successfully!'}), 200
+
+@app.route('/order-cancel/<int:order_id>', methods=['GET', 'POST'])
+def deliver_cancel(order_id):
+    
+    order_connection = OrderController(database)
+    order_connection.cancel_order(order_id) 
+    
+    return jsonify({'message': 'Product delivered successfully!'}), 200
+    
+
+        
     
 
     

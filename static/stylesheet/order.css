@@ -145,7 +145,7 @@ input, select {
     background-color: #99b378;
 }
 
-.update-icon, .delete-icon {
+.eye-icon, .check-icon, .cancel-icon {
     width: 25px;
     height: 25px;
     cursor: pointer;
@@ -183,4 +183,80 @@ input, select {
 
 .overlay-table td {
     text-align: center; 
+}
+
+.modal-body h5 {
+    font-size: 25px;  
+    font-weight: 400; 
+    margin: 0;
+    color: grey;
+    text-align: center;
+
+}
+.deliver-modal-header {
+    background-color: #FFBD59;
+}
+
+.cancel-modal-header {
+    background-color: #ff5f59;
+}
+
+.modal-footer {
+    border:none;
+}
+
+.btn-cancel {
+    background-color: #da4949;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    
+}
+
+.btn-cancel:hover {
+    background-color: #bd3838;
+}
+
+.btn-confirm {
+    background-color: #c1e493;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-confirm:hover {
+    background-color: #99b378;
+}
+
+.btn-no {
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 5px;
+    border-color: black;
+}
+
+.btn-no:hover {
+    background-color: #bd3838;
+}
+
+.btn-yes {
+    background-color: #c1e493;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-yes:hover {
+    background-color: #99b378;
 }
