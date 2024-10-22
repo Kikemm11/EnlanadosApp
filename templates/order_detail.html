@@ -17,9 +17,9 @@
         document.getElementById('orderClient').value = "{{order.client}}"; 
         document.getElementById('orderCity').value = {{order.city_id}}; 
         document.getElementById('orderDescription').value = "{{order.description}}"; 
-        document.getElementById('orderProduct').value = {{order.product_id}}; 
+        document.getElementById('orderProduct').value = {{order.product_type.product.id}}; 
         document.getElementById('orderProductType').value = {{order.product_type_id}}; 
-        document.getElementById('orderPrice').value = "{{order.price}}"; 
+        document.getElementById('orderPrice').value = "{{order.product_type.price}}"; 
         document.getElementById('orderAddedPrice').value = "{{order.added_price}}";
         document.getElementById('orderCredit').value = "{{order.credit}}";
         document.getElementById('orderPaymentMethod').value = {{order.payment_method_id}}; 
@@ -128,6 +128,7 @@
             <button type="submit" class="btn-ok" id="updateBtn" hidden>Guardar</button>
         </div>
     </form>
+    <script src="../static/js/order_detail.js"></script>
     <script>
         document.querySelector('.btn-update').addEventListener('click', function() {
           // Show the hidden button
@@ -182,50 +183,13 @@
                 {% for product_type in product_types %}
 
                     if (productTypeId == {{product_type.id}}) {
-                        price = {{product_type.id}};
+                        price = {{product_type.price}};
                     }
                 {% endfor %}
         
                 document.getElementById('orderPrice').value = price;   
             });
         });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.city-select').select2({
-              placeholder: "Selecciona un destino",
-              allowClear: true
-            });
-          });
-        
-        $(document).ready(function() {
-          $('.product-select').select2({
-            placeholder: "Selecciona un producto",
-            allowClear: true
-          });
-        });
-        
-        $(document).ready(function() {
-            $('.product-type-select').select2({
-              placeholder: "Selecciona un tipo de producto",
-              allowClear: true
-            });
-          });
-        
-        $(document).ready(function() {
-          $('.payment-method-select').select2({
-            placeholder: "Selecciona un método de pago",
-            allowClear: true
-          });
-        });
-
-        $(document).ready(function() {
-            $('.status-select').select2({
-              placeholder: "Selecciona un estatus",
-              allowClear: true
-            });
-          });
-
     </script>
 </body>
 </html>

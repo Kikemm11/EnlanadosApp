@@ -27,3 +27,10 @@ $(document).ready(function() {
     allowClear: true
   });
 });
+
+$(document).ready(function() {
+    $('.status-select').select2({
+      placeholder: "Selecciona un estatus",
+      allowClear: true
+    });
+  });

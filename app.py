@@ -236,9 +236,7 @@ def add_order():
         city = request.form['orderCity']
         description = request.form['orderDescription']
         
-        product = request.form['orderProduct']
         product_type = request.form['orderProductType']
-        price = request.form['orderPrice']
         added_price = request.form['orderAddedPrice']
         credit = request.form['orderCredit']
         payment_method = request.form['orderPaymentMethod']
@@ -248,9 +246,7 @@ def add_order():
         data = {'client': client,
                 'city_id': int(city),
                 'description': description,
-                'product_id': int(product),
                 'product_type_id': int(product_type),
-                'price': float(price),
                 'added_price': float(added_price) if added_price != '' else 0.0,
                 'credit': float(credit) if credit != '' else 0.0,
                 'payment_method_id': int(payment_method),
@@ -307,9 +303,7 @@ def detail_order(order_id):
         city = request.form['orderCity']
         description = request.form['orderDescription']
         
-        product = request.form['orderProduct']
         product_type = request.form['orderProductType']
-        price = request.form['orderPrice']
         added_price = request.form['orderAddedPrice']
         credit = request.form['orderCredit']
         payment_method = request.form['orderPaymentMethod']
@@ -319,9 +313,7 @@ def detail_order(order_id):
         data = {'client': client,
                 'city_id': int(city),
                 'description': description,
-                'product_id': int(product),
                 'product_type_id': int(product_type),
-                'price': float(price),
                 'added_price': float(added_price) if added_price != '' else 0.0,
                 'credit': float(credit) if credit != '' else 0.0,
                 'payment_method_id': int(payment_method),

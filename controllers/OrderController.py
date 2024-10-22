@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 
 from models.Models import Order
+from models.Models import ProductType
 
 load_dotenv()
 database = os.getenv("DATABASE")
@@ -28,7 +29,12 @@ class OrderController:
     def read_one_order(self, order_id):
     
         session = self.SessionLocal()
-        result = session.query(Order).filter(Order.id == order_id).first()
+        result = session.query(Order).filter(Order.id == order_id).options(
+                              joinedload(Order.product_type).joinedload(ProductType.product), 
+                              joinedload(Order.payment_method),
+                              joinedload(Order.status),
+                              joinedload(Order.city),
+                              ).first()
         session.close()
         return result
         
@@ -43,8 +49,7 @@ class OrderController:
             result = session.query(Order).filter(
                         extract('month', Order.estimated_date) == current_month,
                         extract('year', Order.estimated_date) == current_year,
-                    ).options(joinedload(Order.product), 
-                              joinedload(Order.product_type), 
+                    ).options(joinedload(Order.product_type).joinedload(ProductType.product), 
                               joinedload(Order.payment_method),
                               joinedload(Order.status),
                               joinedload(Order.city),
@@ -68,12 +73,10 @@ class OrderController:
             result = session.query(Order).filter(
                         Order.estimated_date.between(start_date, end_date),
                         Order.status_id.in_(status)
-                    ).options(
-                        joinedload(Order.product), 
-                        joinedload(Order.product_type), 
-                        joinedload(Order.payment_method),
-                        joinedload(Order.status),
-                        joinedload(Order.city),
+                    ).options(joinedload(Order.product_type).joinedload(ProductType.product), 
+                            joinedload(Order.payment_method),
+                            joinedload(Order.status),
+                            joinedload(Order.city),
                     ).all()
             
             return result
@@ -93,12 +96,10 @@ class OrderController:
             orders = session.query(Order).filter(
                         Order.estimated_date.between(start_date, end_date),
                         Order.status_id == 2
-                    ).options(
-                        joinedload(Order.product), 
-                        joinedload(Order.product_type), 
-                        joinedload(Order.payment_method),
-                        joinedload(Order.status),
-                        joinedload(Order.city),
+                    ).options(joinedload(Order.product_type).joinedload(ProductType.product), 
+                            joinedload(Order.payment_method),
+                            joinedload(Order.status),
+                            joinedload(Order.city),
                     ).all()
                     
             payment_methods = {}
@@ -111,7 +112,7 @@ class OrderController:
                 
                 # Get total revenue data
                 
-                order_revenue = order.price + order.added_price
+                order_revenue = order.product_type.price + order.added_price
                 revenue += order_revenue 
                 
                 # Get payment methods data
@@ -132,10 +133,10 @@ class OrderController:
                 
                 # Get products data
                 
-                if not products.get(order.product.name):
-                    products[order.product.name] = 1
+                if not products.get(order.product_type.product.name):
+                    products[order.product_type.product.name] = 1
                 else:
-                    products[order.product.name] += 1
+                    products[order.product_type.product.name] += 1
                 
             
             result = {'revenue': revenue,
@@ -183,10 +184,8 @@ class OrderController:
             if order and order.status_id == 1:
                 order.client = data.get('client')
                 order.city_id = data.get('city_id')
-                order.product_id = data.get('product_id')
                 order.product_type_id = data.get('product_type_id')
                 order.description = data.get('description')
-                order.price = data.get('price')
                 order.added_price = data.get('added_price')
                 order.credit = data.get('credit')
                 order.payment_method_id = data.get('payment_method_id')

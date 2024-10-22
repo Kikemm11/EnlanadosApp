@@ -14,9 +14,6 @@ class Product(Base):
     # One Product can have many ProductTypes
     product_types = relationship("ProductType", backref="product", cascade="all, delete", passive_deletes=True)
     
-    # One Product belongs to many Orders
-    orders = relationship("Order", backref="product", cascade="all, delete", passive_deletes=True)
-    
     
 class ProductType(Base):
     __tablename__ = 'product_type'
@@ -74,17 +71,14 @@ class Order(Base):
     id = Column(Integer, primary_key=True)
     client = Column(String, nullable=False)
     city_id = Column(Integer, ForeignKey('city.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
-    product_id = Column(Integer, ForeignKey('product.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     product_type_id = Column(Integer, ForeignKey('product_type.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     description = Column(Text, nullable=False)
-    price = Column(Float)
     added_price = Column(Float, default=0.0)
     credit = Column(Float, default=0.0)
     payment_method_id = Column(Integer, ForeignKey('payment_method.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     estimated_date = Column(Date, nullable=False)
     status_id = Column(Integer, ForeignKey('status.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False, default=1)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
-    
     
 
     # Add Check constraint
