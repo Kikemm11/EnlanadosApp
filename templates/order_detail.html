@@ -110,7 +110,7 @@
             <div class="right-side">
                 <div class="date-info">
                     <label for="estimated-date">Fecha Estimada</label>
-                    <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true readonly>
+                    <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true disabled>
                 </div>
                 <div class="status-info">
                     <label for="orderPaymentMethod">Estatus</label>
@@ -142,7 +142,7 @@
           document.getElementById('orderAddedPrice').readOnly = false;
           document.getElementById('orderCredit').readOnly = false;
           document.getElementById('orderPaymentMethod').disabled = false;
-          document.getElementById('orderEstimatedDate').readOnly = false;
+          document.getElementById('orderEstimatedDate').disabled = false;
         });
     </script>
     <script>

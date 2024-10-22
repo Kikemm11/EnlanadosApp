@@ -80,6 +80,75 @@ class OrderController:
         
         finally:
             session.close()
+            
+    def statistics_data(self, start_date, end_date):
+        
+        session = self.SessionLocal()
+        
+        start_date = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+        
+        try:
+                    
+            orders = session.query(Order).filter(
+                        Order.estimated_date.between(start_date, end_date),
+                        Order.status_id == 2
+                    ).options(
+                        joinedload(Order.product), 
+                        joinedload(Order.product_type), 
+                        joinedload(Order.payment_method),
+                        joinedload(Order.status),
+                        joinedload(Order.city),
+                    ).all()
+                    
+            payment_methods = {}
+            revenues_per_day = {}
+            products = {}
+            
+            revenue = 0
+            
+            for order in orders:
+                
+                # Get total revenue data
+                
+                order_revenue = order.price + order.added_price
+                revenue += order_revenue 
+                
+                # Get payment methods data
+                
+                if not payment_methods.get(order.payment_method.name):
+                    payment_methods[order.payment_method.name] = 1
+                else:
+                    payment_methods[order.payment_method.name] += 1
+                    
+                # Get revenues per day data
+                
+                date = order.estimated_date.strftime('%Y-%m-%d')
+                
+                if not revenues_per_day.get(date):
+                    revenues_per_day[date] = order_revenue
+                else:
+                    revenues_per_day[date] += order_revenue
+                
+                # Get products data
+                
+                if not products.get(order.product.name):
+                    products[order.product.name] = 1
+                else:
+                    products[order.product.name] += 1
+                
+            
+            result = {'revenue': revenue,
+                      'payment_methods_data': payment_methods,
+                      'revenues_data': revenues_per_day,
+                      'products_data': products
+                      }
+            
+            return result
+        
+        finally:
+            session.close()
+        
         
         
       

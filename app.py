@@ -333,6 +333,30 @@ def detail_order(order_id):
         return redirect(url_for('order'))
     
 
+@app.route('/statistics', methods=['GET', 'POST'])
+def statistics():
+    
+    if request.method == 'GET':
+        
+        return render_template('statistics.html')
+    
+    else:
+        
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        
+        order_connection = OrderController(database)
+        
+        data = order_connection.statistics_data(start_date, end_date)
+        
+        revenue = data['revenue']
+        payment_methods_data = data['payment_methods_data']
+        revenues_data = data['revenues_data']
+        products_data = data['products_data']
+        
+        return render_template('statistics.html', revenue=revenue, payment_methods_data=payment_methods_data, revenues_data=revenues_data, products_data=products_data)
+        
+
 
 if __name__ == "__main__": 
     app.run(host="127.0.0.1", port=5000, debug=True)   
