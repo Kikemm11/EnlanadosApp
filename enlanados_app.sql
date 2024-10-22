@@ -71,10 +71,8 @@ CREATE TABLE IF NOT EXISTS public."order"
     id SERIAL,
     client character varying NOT NULL,
     city_id integer NOT NULL,
-    product_id integer NOT NULL,
     product_type_id integer NOT NULL,
     description text NOT NULL,
-    price real,
     added_price real DEFAULT 0.0,
     credit real DEFAULT 0.0,
     payment_method_id integer NOT NULL,
@@ -98,13 +96,6 @@ ALTER TABLE IF EXISTS public.product_type
 ALTER TABLE IF EXISTS public."order"
     ADD CONSTRAINT city_fk FOREIGN KEY (city_id)
     REFERENCES public.city (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-    ON DELETE CASCADE;
-
-
-ALTER TABLE IF EXISTS public."order"
-    ADD CONSTRAINT product_fk FOREIGN KEY (product_id)
-    REFERENCES public.product (id) MATCH SIMPLE
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
