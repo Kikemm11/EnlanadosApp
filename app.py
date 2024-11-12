@@ -345,6 +345,8 @@ def statistics():
         payment_methods_data = data['payment_methods_data']
         revenues_data = data['revenues_data']
         products_data = data['products_data']
+
+        print(data)
         
         return render_template('statistics.html', revenue=revenue, payment_methods_data=payment_methods_data, revenues_data=revenues_data, products_data=products_data)
         

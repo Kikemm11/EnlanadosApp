@@ -32,6 +32,7 @@ if (revenuesPerDayChart){
         type: 'bar',
         data: {
             datasets: [{
+                label: "Ingresos",
                 data: values,
                 backgroundColor: ['#99b378']
             }],

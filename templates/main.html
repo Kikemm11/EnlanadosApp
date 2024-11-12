@@ -40,7 +40,7 @@
                 <h3>Próximos pedidos</h3>
                 <ul>
                     {% for order in orders %}
-                        <li>{{ order.client }}: {{order.product_type.name}}, {{order.estimated_date}}</li>
+                        <li>{{ order.client }}: {{order.product_type.name}} | {{order.estimated_date}} | {{order.status.name}}</li>
                     {% endfor %}
                 </ul>
             </div>

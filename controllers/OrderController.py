@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 import os
 
-from models.Models import Order
-from models.Models import ProductType
+from models.Models import Order, ProductType, Status
 
 load_dotenv()
 database = os.getenv("DATABASE")
