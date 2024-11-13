@@ -346,9 +346,9 @@ def statistics():
         revenues_data = data['revenues_data']
         products_data = data['products_data']
 
-        print(data)
+        dates = {'start_date': start_date, 'end_date': end_date}
         
-        return render_template('statistics.html', revenue=revenue, payment_methods_data=payment_methods_data, revenues_data=revenues_data, products_data=products_data)
+        return render_template('statistics.html', revenue=revenue, payment_methods_data=payment_methods_data, revenues_data=revenues_data, products_data=products_data, dates=dates)
         
 
 

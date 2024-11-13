@@ -69,3 +69,8 @@ if (productsChart){
     }
     );
 }
+
+if (dates){
+    document.getElementById('start-date').value = dates["start_date"]; 
+    document.getElementById('end-date').value = dates["end_date"]; 
+}

@@ -83,6 +83,16 @@ CREATE TABLE IF NOT EXISTS public."order"
     UNIQUE (id)
 );
 
+CREATE TABLE IF NOT EXISTS public.order_whool
+(
+    id SERIAL,
+    order_id integer NOT NULL,
+    whool_stock_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    PRIMARY KEY (id),
+    UNIQUE (id)
+);
+
 
 -- Add foreign key constraints
 
@@ -117,6 +127,18 @@ ALTER TABLE IF EXISTS public."order"
 ALTER TABLE IF EXISTS public."order"
     ADD CONSTRAINT status_fk FOREIGN KEY (status_id)
     REFERENCES public.status (id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE IF EXISTS public.order_whool
+    ADD CONSTRAINT order_fk FOREIGN KEY (order_id)
+    REFERENCES public."order" (id) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+ALTER TABLE IF EXISTS public.order_whool
+    ADD CONSTRAINT whool_stock_fk FOREIGN KEY (whool_stock_id)
+    REFERENCES public.whool_stock (id) MATCH SIMPLE
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
