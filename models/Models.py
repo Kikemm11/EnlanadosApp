@@ -79,6 +79,13 @@ class Order(Base):
     estimated_date = Column(Date, nullable=False)
     status_id = Column(Integer, ForeignKey('status.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False, default=1)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
+
+    # Many-to-many relationship with WhoolStock via OrderWhool
+    whool_stocks = relationship(
+        'WhoolStock',
+        secondary='order_whool',
+        backref='orders'
+    )
     
 
     # Add Check constraint
@@ -100,4 +107,11 @@ class WhoolStock(Base):
     # Add Check constraint
     __table_args__ = (
         CheckConstraint('quantity >= 0', name='whool_stock_quantity_check'),
-    )   
+    )
+
+class OrderWhool(Base):
+    __tablename__ = 'order_whool'
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(Integer, ForeignKey('order.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+    whool_stock_id = Column(Integer, ForeignKey('whool_stock.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)

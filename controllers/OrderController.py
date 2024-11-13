@@ -33,6 +33,7 @@ class OrderController:
                               joinedload(Order.payment_method),
                               joinedload(Order.status),
                               joinedload(Order.city),
+                              joinedload(Order.whool_stocks)
                               ).first()
         session.close()
         return result
@@ -161,7 +162,7 @@ class OrderController:
             session = self.SessionLocal()
             session.add(db_data)
             session.commit()
-            return {'success': True, 'message': 'Pedido registrado correctamente.'}
+            return db_data.id
         except IntegrityError:
             session.rollback()
             return {'success': False, 'message': 'El pedido ya existe.'}

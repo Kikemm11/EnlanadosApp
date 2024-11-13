@@ -112,7 +112,26 @@
                     <label for="estimated-date">Fecha Estimada</label>
                     <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true disabled>
                 </div>
-                <div class="status-info">
+                <div class="whools-info">
+                    <label>Lanas</label>
+                    <div class="colors" id="colors">
+                        {% for whool in whool_colors %}
+                            {{whool}}
+                        {% endfor %}
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <button class="dropdown-btn">Select Whool Stocks</button>
+                        <div class="dropdown-content">
+                            {% for whool in whool_stocks %}
+                                    <div class="whool-options">
+                                        <input type="checkbox" name="whool_stocks" value="{{ whool.id }}">
+                                        {{ whool.color }}
+                                    </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="status-info" id="status-info">
                     <label for="orderPaymentMethod">Estatus</label>
                     <select class="status-select" id="orderStatus" name="orderStatus" required=true disabled>
                         <option value="">Selecciona un Estatus</option>
@@ -144,6 +163,10 @@
           document.getElementById('orderCredit').readOnly = false;
           document.getElementById('orderPaymentMethod').disabled = false;
           document.getElementById('orderEstimatedDate').disabled = false;
+
+          document.getElementById('colors').style.display = 'none';
+          document.getElementById('dropdown').style.display = 'inline-block';
+          document.getElementById('status-info').style.display = 'none';
         });
     </script>
     <script>

@@ -135,6 +135,15 @@ input {
    border: none;
 }
 
+.date, .whools {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .form-btns {
     display: flex;
     flex-direction: row;
@@ -170,4 +179,54 @@ input {
 
 .btn-cancel:hover {
     background-color: #bd3838;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background-color: #c1e493;
+    color: white;
+    padding: 1px;
+    width: 200px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.dropdown-btn:hover {
+    background-color: #99b378;
+}
+
+.dropdown-content {
+    margin-top: 20px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px;
+}
+
+.dropdown-content label {
+    display: block;
+}
+
+.show {
+    display: flex;
+    flex-direction: column;
+}
+
+.whool-options {
+    display: flex;
+    flex-direction: row;
+}
+
+.whool-options input {
+    margin-right: 10px;
 }

@@ -13,6 +13,7 @@ from controllers.WhoolStockController import WhoolStockController
 from controllers.StatusController import StatusController
 from controllers.CityController import CityController
 from controllers.PaymentMethodController import PaymentMethodController 
+from controllers.OrderWhoolController import OrderWhoolController
 
 load_dotenv()
 database = os.getenv("DATABASE")
@@ -220,17 +221,20 @@ def add_order():
         product_connection = ProductController(database)
         product_type_connection = ProductTypeController(database)
         payment_method_connection = PaymentMethodController(database)
+        whool_stock_connection = WhoolStockController(database)
         
         cities = city_connection.read_all_city()
         products = product_connection.read_all_product()
         product_types = product_type_connection.read_all_product_type()
         payment_methods = payment_method_connection.read_all_payment_method()
+        whool_stocks = whool_stock_connection.read_all_whool_stock()
         
-        return render_template('order_add.html', cities=cities, products=products, product_types=product_types, payment_methods=payment_methods)
+        return render_template('order_add.html', cities=cities, products=products, product_types=product_types, payment_methods=payment_methods, whool_stocks=whool_stocks)
     
     else:
         
         order_connection = OrderController(database)
+        order_whool_connection = OrderWhoolController(database)
         
         client = request.form['orderClient']
         city = request.form['orderCity']
@@ -240,8 +244,11 @@ def add_order():
         added_price = request.form['orderAddedPrice']
         credit = request.form['orderCredit']
         payment_method = request.form['orderPaymentMethod']
-        
+
+        selected_whool_stock_ids = request.form.getlist('whool_stocks')
         estimated_date = request.form['orderEstimatedDate']
+
+        selected_whool_stock_ids = [int(whool) for whool in selected_whool_stock_ids]
         
         data = {'client': client,
                 'city_id': int(city),
@@ -253,7 +260,12 @@ def add_order():
                 'estimated_date': estimated_date
                 }
 
-        order_connection.write_order(data)
+        order_id = order_connection.write_order(data)
+
+        for whool_stock_id in selected_whool_stock_ids:
+            data = {'order_id': order_id, 'whool_stock_id': whool_stock_id}
+            order_whool_connection.write_order_whool_stock(data)
+        
         
         return redirect(url_for('order'))
         
@@ -285,6 +297,7 @@ def detail_order(order_id):
         payment_method_connection = PaymentMethodController(database)
         status_connection = StatusController(database)
         order_connection = OrderController(database)
+        whool_stock_connection = WhoolStockController(database)
         
         cities = city_connection.read_all_city()
         products = product_connection.read_all_product()
@@ -292,12 +305,16 @@ def detail_order(order_id):
         payment_methods = payment_method_connection.read_all_payment_method()
         statuses = status_connection.read_all_status()
         order = order_connection.read_one_order(order_id)
+
+        whool_colors = [whool.color for whool in order.whool_stocks]
+        whool_stocks = whool_stock_connection.read_all_whool_stock()
         
-        return render_template('order_detail.html', cities=cities, products=products, product_types=product_types, payment_methods=payment_methods, statuses=statuses, order=order)
+        return render_template('order_detail.html', cities=cities, products=products, product_types=product_types, payment_methods=payment_methods, statuses=statuses, order=order, whool_colors=whool_colors, whool_stocks=whool_stocks)
     
     else:
         
         order_connection = OrderController(database)
+        order_whool_connection = OrderWhoolController(database)
         
         client = request.form['orderClient']
         city = request.form['orderCity']
@@ -309,6 +326,9 @@ def detail_order(order_id):
         payment_method = request.form['orderPaymentMethod']
         
         estimated_date = request.form['orderEstimatedDate']
+        selected_whool_stock_ids = request.form.getlist('whool_stocks')
+
+        selected_whool_stock_ids = [int(whool) for whool in selected_whool_stock_ids]
         
         data = {'client': client,
                 'city_id': int(city),
@@ -321,7 +341,10 @@ def detail_order(order_id):
                 }
 
         order_connection.update_order(order_id, data)
-        
+
+        if selected_whool_stock_ids:
+            order_whool_connection.update_order_whool_stock(order_id, selected_whool_stock_ids)
+
         return redirect(url_for('order'))
     
 

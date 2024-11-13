@@ -34,3 +34,25 @@ $(document).ready(function() {
       allowClear: true
     });
   });
+
+document.querySelector('.dropdown-btn').addEventListener('click', function(event) {
+  // Prevent form submission or any other action if needed
+  event.stopPropagation();
+  event.preventDefault();
+  
+  // Toggle the 'show' class for the dropdown content
+  document.querySelector('.dropdown-content').classList.toggle('show');
+});
+
+// Close dropdown if clicked outside
+window.onclick = function(event) {
+  if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-content input')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+          }
+      }
+  }
+}

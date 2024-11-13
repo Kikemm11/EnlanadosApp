@@ -89,8 +89,24 @@
             <div class="vertical-line"></div>
             <div class="right-side">
                 <div class="date-info">
-                    <label for="estimated-date">Fecha Estimada</label>
-                    <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true>
+                    <div class="date">
+                        <label for="estimated-date">Fecha Estimada</label>
+                        <input type="date" id="orderEstimatedDate" name="orderEstimatedDate" required=true>
+                    </div>
+                    <div class="whools">
+                        <label>Lanas</label>
+                        <div class="dropdown">
+                            <button class="dropdown-btn">Select Whool Stocks</button>
+                            <div class="dropdown-content">
+                                {% for whool in whool_stocks %}
+                                        <div class="whool-options">
+                                            <input type="checkbox" name="whool_stocks" value="{{ whool.id }}">
+                                            {{ whool.color }}
+                                        </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>  
         </div>
